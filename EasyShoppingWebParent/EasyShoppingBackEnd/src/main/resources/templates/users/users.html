@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <head th:replace="fragments::page_head('Users - Easy Shopping Admin','none')">
+    </head>
+<body >
+<div class="container-fluid">
+    <div th:replace="navigation_menu_fragment::navigation_menu"></div>
+    <div>
+        <div>
+            <h2>Manage Users</h2>
+            <div th:if="${message != null}" class="alert alert-success text-center m-lg-1">
+                [[${message}]]
+            </div>
+        </div>
+        <div style="display: flex; align-items: center;">
+            <div class="manage-entity-menu">
+                <a th:href="@{/users/new}" class="create-new-entity mr-2" data-title="Create User"><img th:src="@{/icon/icons8-add-user-48.png}" width="40px" height="40px">
+                </a>
+                <!--&nbsp;|&nbsp;-->
+                <a th:href="@{/users/export/csv}" class="export-csv mr-2" data-title="Export users list to CSV"><img th:src="@{/icon/icons8-export-csv-80.png}" width="40px" height="40px">
+                </a>
+                <!--&nbsp;|&nbsp;-->
+                <a th:href="@{/users/export/excel}" class="export-excel mr-2"
+                   data-title="Export users list to Excel"><img th:src="@{/icon/icons8-export-excel-96.png}" width="40px" height="40px">
+                </a>
+                <!--&nbsp;|&nbsp;-->
+                <a th:href="@{/users/export/pdf}" target=”_blank” class="export-pdf mr-2" data-title="Export users list to PDF"><img th:src="@{/icon/icons8-export-pdf-60.png}" width="43px" height="43px">
+                </a>
+            </div>
+            <div th:replace="fragments::search_form('/users/page/1')"></div>
+
+        </div>
+    </div>
+
+    <div class="table-responsive full-details">
+        <table class="table table-bordered table-striped table-hover table-responsive{-sm|-md|-lg|-xl} entity-table">
+            <thead class="table-dark">
+            <tr>
+                <th class="hideable-column">
+                <th th:replace="fragments::colomn_Link('/users','id', 'User ID','tag')"/>
+                </th>
+                <th>Photo</th>
+
+                <th class="hideable-column">
+                <th th:replace="fragments::colomn_Link('/users','email', 'Email','tag')"/>
+                </th>
+
+                <th th:replace="fragments::colomn_Link('/users','firstName', 'First Name','none')"/>
+
+                <th th:replace="fragments::colomn_Link('/users','lastName', 'Last Name','none')"/>
+
+                <th>
+                    Role
+                </th>
+
+                <th th:replace="fragments::colomn_Link( '/users','enabled', 'Enabled','none')"/>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody class="entity-table-body">
+            <tr th:each="user: ${listUsers}">
+                <td class="hideable-column">
+                    <span th:text="${user.id}"></span>
+                    <span id="id" th:value="${user.id}"></span>
+                </td>
+                <td>
+                    <img th:if="${user.photo==null}" th:src="@{/icon/icons8-male-user-48.png}">
+                    <img th:if="${user.photo!=null}" th:src="@{${user.photosImagePath}}" style="width: 100px">
+                </td>
+                <td class="hideable-column">
+                    <span th:text="${user.email}"></span>
+                    <div class="div-email">
+                        <input name="email" th:value="${user.email}" hidden>
+                    </div>
+                </td>
+                <td>[[${user.firstName}]]</td>
+                <td>[[${user.lastName}]]</td>
+                <td><span th:text="${user.roles}"></span></td>
+                <td class="entity-table-body cell">
+                    <span hidden th:value="${user.enabled}" th:text="${user.enabled}"></span>
+
+                    <a th:if="${user.enabled==true}" class="entity-table-body-enable" title="The user is currently enabled. Click to disable" th:href="@{'/users/' + ${user.id} + '/enabled/false?page='+${currentPage}+'&sortField='+${sortField}+'&sortDirection='+${sortDirection}+${keyword != null ? '&keyword=' + keyword : ''}}"> <img th:src="@{/icon/icons8-checked-user-male-48.png}" width="30px" height="30px">
+                    </a>
+
+                    <a th:if="${user.enabled==false}" class="entity-table-body-enable_more768" title="The user is currently disabled. Click to enable" th:href="@{'/users/' + ${user.id} + '/enabled/true?page='+${currentPage}+'&sortField='+${sortField}+'&sortDirection='+${sortDirection}+${keyword != null ? '&keyword=' + keyword : ''}}">
+                        <img th:src="@{/icon/icons8-denied-48.png}" width="30px" height="30px">
+                    </a>
+
+                </td>
+                <td class="entity-table-body cell">
+                    <div class="cell edit-delete">
+                        <a th:href="@{'/users/edit/'+${user.id}+${currentPage != null ? '?page=' + currentPage : ''} +${sortField != null ? '&sortField=' + sortField : ''}+ ${sortDirection != null ? '&sortDirection=' + sortDirection : ''}+ ${keyword != null ? '&keyword=' + keyword : ''}}"class="entity-table-body-edit" style="display: flex; flex-direction: column; align-items: center; margin-right: 0.5em;"> <img th:src="@{/icon/icons8-edit-48.png}" width="30px" height="30px">Edit</a>
+                        &nbsp;
+                        <a th:href="@{'/users/delete/'+${user.id}+${currentPage != null ? '?page=' + currentPage : ''} +${sortField != null ? '&sortField=' + sortField : ''}+ ${sortDirection != null ? '&sortDirection=' + sortDirection : ''}+ ${keyword != null ? '&keyword=' + keyword : ''}}" th:entityDeleteId="${user.id}" class="entity-table-body-delete link-delete" data-title="Delete Profile" style="display: flex; flex-direction: column; align-items: center;"><img th:src="@{/icon/icons8-delete-48.png}" width="30px" height="30px">Delete</a>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="less-details">
+        <div th:each="user: ${listUsers}" class="row m-1">
+            <div class="col-4 mb-2 less-details-photo-place">
+                <img th:if="${user.photo==null}" th:src="@{/icon/icons8-male-user-48.png}">
+                <img th:if="${user.photo!=null}" th:src="@{${user.photosImagePath}}" style="width: 100px">
+            </div>
+            <div class="col-8 mb-3">
+                <div style="font-size: 18px; font-weight: bold">[[${user.fullName}]]</div>
+                <div>[[${user.roles}]]</div>
+                <div class="mt-2 entity-table-body cell" style="display: flex">
+                    <span hidden th:value="${user.enabled}" th:text="${user.enabled}"></span>
+
+                    <a th:if="${user.enabled==true}" class="entity-table-body-enable" th:href="@{'/users/' + ${user.id} + '/enabled/false?page='+${currentPage}+'&sortField='+${sortField}+'&sortDirection='+${sortDirection}+${keyword != null ? '&keyword=' + keyword : ''}}">
+                    <img th:src="@{/icon/icons8-checked-user-male-48.png}" width="30px" height="30px">Enabled
+                    </a>
+
+                    <a th:if="${user.enabled==false}" class="entity-table-body-enable" th:href="@{'/users/' + ${user.id} + '/enabled/true?page='+${currentPage}+'&sortField='+${sortField}+'&sortDirection='+${sortDirection}+${keyword != null ? '&keyword=' + keyword : ''}}"> <img th:src="@{/icon/icons8-denied-48.png}" width="30px" height="30px">Disabled
+                    </a>
+
+                    <a th:href="@{'/users/edit/'+${user.id}+${currentPage != null ? '?page=' + currentPage : ''} +${sortField != null ? '&sortField=' + sortField : ''}+ ${sortDirection != null ? '&sortDirection=' + sortDirection : ''}+ ${keyword != null ? '&keyword=' + keyword : ''}}"class="entity-table-body-edit"> <img th:src="@{/icon/icons8-edit-48.png}" width="30px" height="30px">Edit</a>
+                    &nbsp;
+                    <a th:href="@{'/users/delete/'+${user.id}+${currentPage != null ? '?page=' + currentPage : ''} +${sortField != null ? '&sortField=' + sortField : ''}+ ${sortDirection != null ? '&sortDirection=' + sortDirection : ''}+ ${keyword != null ? '&keyword=' + keyword : ''}}" th:entityDeleteId="${user.id}" class="entity-table-body-delete link-delete"><img th:src="@{/icon/icons8-delete-48.png}" width="30px" height="30px">Delete</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="text-center m-1" th:if="${totalItems > 0}">
+        <span>Showing users # [[${startCount}]] to [[${endCount}]] of [[${totalItems}]]</span>
+    </div>
+    <div class="text-center m-1" th:unless="${totalItems > 0}">
+        <span>No users found</span>
+    </div>
+
+    <!--Pagination-->
+    <div th:if="${totalPages > 1}">
+        <nav>
+            <ul class="pagination justify-content-center flex-wrap">
+                <li th:class="${currentPage > 1 ? 'page-item' : 'page-item disabled'}">
+                    <a th:replace="fragments::users_pagination_page_link(1,'First')"/>
+                </li>
+
+                <li th:class="${currentPage > 1 ? 'page-item' : 'page-item disabled'}">
+                    <a th:replace="fragments::users_pagination_page_link(${currentPage - 1},'Previous')"/>
+                </li>
+
+                <th:block th:if="${totalPages <= 10}">
+                <li th:each="i : ${#numbers.sequence(1, totalPages)}"
+                    th:class="${currentPage != i ? 'page-item': 'page-item active'}">
+                    <a th:replace="fragments::users_pagination_page_link(${i},${i})"/>
+                </li>
+                </th:block>
+
+                <th:block th:if="${totalPages > 10}">
+                    <th:block th:if="${currentPage <= 5 || currentPage > totalPages - 4}">
+                        <li th:each="i : ${#numbers.sequence(1,5)}"
+                            th:class="${currentPage != i ? 'page-item': 'page-item active'}">
+                            <a th:replace="fragments::users_pagination_page_link(${i},${i})"/>
+                        </li>
+
+                        <a th:replace="fragments::users_pagination_page_link(6,'...')"/>
+
+                        <li th:each="i : ${#numbers.sequence(totalPages - 4,totalPages)}"
+                            th:class="${currentPage != i ? 'page-item': 'page-item active'}">
+                            <a th:replace="fragments::users_pagination_page_link(${i},${i})"/>
+                        </li>
+                    </th:block>
+
+                    <th:block th:if="${currentPage > 5 && currentPage <= totalPages - 4}">
+                        <a th:replace="fragments::users_pagination_page_link(${currentPage - 5},'...')"/>
+
+                        <li th:each="i : ${#numbers.sequence(currentPage - 4,currentPage + 4)}" th:class="${currentPage != i ? 'page-item': 'page-item active'}">
+                            <a th:replace="fragments::users_pagination_page_link(${i},${i})"/>
+                        </li>
+
+                        <a th:replace="fragments::users_pagination_page_link(${currentPage + 5},'...')"/>
+                    </th:block>
+                </th:block>
+
+                <li th:class="${currentPage < totalPages ? 'page-item' : 'page-item disabled'}">
+                    <a th:replace="fragments::users_pagination_page_link(${currentPage + 1},'Next')"/>
+                </li>
+
+                <li th:class="${currentPage < totalPages ? 'page-item' : 'page-item disabled'}">
+                    <a th:replace="fragments::users_pagination_page_link(${totalPages},'Last')"/>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <div th:replace="modal_fragments::modal_dialog_confirm_delete"></div>
+
+    <div th:replace="fragments::footer"></div>
+
+</div>
+<script th:src="@{/js/forms.js}"></script>
+<script type="text/javascript">
+
+    $(document).ready(function() {
+        $(".link-delete").on("click", function(e) {
+            e.preventDefault();
+            showDeleteConfirmModal($(this), "user");
+        });
+    });
+
+    function clearFilter() {
+        window.location = "[[@{/users}]]";
+    }
+</script>
+</body>
+</html>

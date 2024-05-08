@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head th:fragment="page_head(title, remove)" th:remove="${remove}">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0">
+    <title>[[${SITE_NAME}]]</title>
+
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" th:href="@{/style.css}">
+    <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/main.js}"></script>
+</head>
+<body>
+
+<!--***********************************************************-->
+<a th:fragment="categories_pagination_page_link(pageNumber, label)" class="page-link" th:href="@{'/category/'+${category.alias}+'/page/'+${pageNumber}+'?sortField=' + ${sortField}+ '&sortDirection=' + ${sortDirection}+${keyword != null ? '&keyword=' + keyword : ''}}">[[${label}]]</a>
+<!--***********************************************************-->
+<a th:fragment="products_pagination_page_link(pageNumber, label)" class="page-link" th:href="@{'/products/page/'+${pageNumber}+'?sortField=' + ${sortField}+ '&sortDirection=' + ${sortDirection}+${keyword != null ? '&keyword=' + keyword : ''}+${categoryId != null ? '&categoryId=' + categoryId : ''}}">[[${label}]]</a>
+<!--*******************************************************-->
+<a th:fragment="search_pagination_page_link(pageNumber, label)" class="page-link" th:href="@{'/search/page/'+${pageNumber}+'?sortField=' + ${sortField}+ '&sortDirection=' + ${sortDirection}+${keyword != null ? '&keyword=' + keyword : ''}+${categoryId != null ? '&categoryId=' + categoryId : ''}}">[[${label}]]</a>
+<!--*******************************************************-->
+
+<div th:fragment="footer" class="text-center">
+    <div style="margin-top: 2%;">
+        <nav class="navbar navbar-expand-md bg-dark navbar-dark" style="display: flex; justify-content: flex-end;">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#bottomNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="bottomNavbar">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/}">About US</a>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link" th:href="@{/}">Privacy Notice</a>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link" th:href="@{/}">Returns &amp; Refunds</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+    <div class="mt-2">
+        <p>[[${COPYRIGHT}]]</p>
+    </div>
+</div>
+</body>
+</html>

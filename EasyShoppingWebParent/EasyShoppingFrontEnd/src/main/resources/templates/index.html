@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments::page_head('Easy Shopping','none')">
+</head>
+<body>
+<div class="container-fluid">
+    <div th:replace="navigation_menu_fragment::header_navigation_menu"></div>
+    <div th:replace="navigation_menu_fragment::search_nav"></div>
+
+    <div style="margin-top: 2%;">
+        <h2>Shopping by Categories</h2>
+    </div>
+    <div class="row" style="justify-content: center; align-items: center;">
+        <div class="col-sm-2" th:each="category : ${listCategories}"
+             style="display: flex; flex-direction: column; align-items: center;">
+            <a th:href="@{'/category/'+ ${category.alias}}" style="display: flex; flex-direction: column; align-items: center;">
+                <div><img th:src="@{${category.imagePath}}" width="100"></div>
+                <div style="text-align: center;">
+                    <b>[[${category.name}]]</b>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <div th:replace="fragments::footer"></div>
+</div>
+</body>
+</html>

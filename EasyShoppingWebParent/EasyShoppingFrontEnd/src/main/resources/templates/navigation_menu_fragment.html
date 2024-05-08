@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="header_navigation_menu">
+    <nav class="navbar bg-dark navbar-expand-xl navbar-dark" id="mediaChanger">
+        <a class="navbar-brand" th:href="@{/}">
+            <img th:src="@{${SITE_LOGO}}" style="width: 160px; height: 65px"/>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#topNavbar, #searchNavbar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="topNavbar">
+            <ul class="navbar-nav" id="numberElements" style="align-items: center;">
+                <li class="nav-item nav-item-number">
+                    <a class="nav-link" th:href="@{/}">Careers</a>
+                </li>
+                <li class="nav-item nav-item-number">
+                    <a class="nav-link" th:href="@{/}">Payments</a>
+                </li>
+                <li class="nav-item nav-item-number">
+                    <a class="nav-link" th:href="@{/}">Shipping &amp; Delivery </a>
+                </li>
+                <li class="nav-item nav-item-number">
+                    <a class="nav-link" th:href="@{/}">Login</a>
+                </li>
+                <li class="nav-item nav-item-number">
+                    <a class="nav-link" th:href="@{/}">Register</a>
+                </li>
+                <li class="nav-item nav-item-number">
+                    <a class="nav-link" th:href="@{/}">Contact</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</div>
+
+<div th:fragment="search_nav" class="row">
+    <div class="col">
+        <nav class="navbar bg-light navbar-expand-sm">
+            <div class="collapse navbar-collapse" id="searchNavbar">
+                <form class="form-inline" th:action="@{/search}" method="get">
+                    <input type="search" name="keyword" class="form-control mr-sm-2" placeholder="keyword" th:value="${keyword}" required/>
+                    <input type="submit" value="Search" class="btn btn-outline-success"/>
+                </form>
+            </div>
+        </nav>
+    </div>
+</div>
+
+</body>
+</html>

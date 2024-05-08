@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <head th:replace="fragments::page_head('Products - Easy Shopping Admin','none')">
+    </head>
+<body>
+<div class="container-fluid">
+    <div th:replace="navigation_menu_fragment::navigation_menu"></div>
+    <div>
+        <div>
+            <h2>Manage Products</h2>
+            <div th:if="${message != null}" class="alert alert-success text-center m-lg-1">
+                [[${message}]]
+            </div>
+        </div>
+
+        <div id="product-entity-menu" style="display: flex; align-items: center;">
+            <div class="manage-entity-menu">
+                <th:block sec:authorize="hasAnyAuthority('Admin', 'Editor')">
+                    <a th:href="@{/products/new}" class="create-new-entity productCreation mr-2" data-title="Add new Product"><img
+                            th:src="@{/icon/category.png}" width="40px" height="40px">
+                    </a>
+                </th:block>
+            </div>
+
+            <div>
+                <form th:action="@{/products/page/1}" id="productSearchForm" class="form-inline m-3">
+                    <input type="hidden" name="sortField" th:value="${sortField}"/>
+                    <input type="hidden" name="sortDirection" th:value="${sortDirection}"/>
+                    <div class="product-category-menu">
+                        Category:
+                        <select class="form-control" name="categoryId" id="dropdownProductCategory">
+                            <option value="0">All Categories</option>
+                            <th:block th:each="category: ${listCategories}">
+                                <option th:value="${category.id}" th:selected="(${categoryId}==${category.id})">
+                                    [[${category.name}]]
+                                </option>
+                            </th:block>
+                        </select>
+                    </div>
+                    <div class="product-filter-menu ml-2">
+                        Filter:&nbsp;
+                        <input type="search" name="keyword" th:value="${keyword}" class="form-control" required/>
+                    </div>
+                    <div class="product-search-clear-buttons-menu">
+                        <button style="border: 0; background: none;" type="submit" value="Search" class="filter-search"
+                                data-title="Search"><img th:src="@{/icon/icons8-search.gif}" width="43px" height="43px">
+                        </button>
+                        <button style="border: 0; background: none;" type="button" value="Clear"
+                                class="filter-clear-search" data-title="Clear search" onclick="clearFilter()"><img
+                                th:src="@{/icon/icons8-clear-button-96.png}" width="43px" height="43px">
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="table-responsive full-details">
+        <table class="table table-bordered table-striped table-hover table-responsive{-sm|-md|-lg|-xl} entity-table">
+            <thead class="table-dark">
+
+            <tr>
+                <th class="hideable-column">
+                <th th:replace="fragments::colomn_Link('/products','id', 'ID','tag')"/>
+                </th>
+
+                <th>Main Image</th>
+
+                <th th:replace="fragments::colomn_Link('/products','name', 'Product Name','none')"/>
+
+                <th th:replace="fragments::colomn_Link('/products','brand', 'Brand','none')"/>
+
+                <th th:replace="fragments::colomn_Link('/products','category', 'Category','none')"/>
+
+                <th:block sec:authorize="hasAnyAuthority('Admin', 'Editor')">
+                    <th th:replace="fragments::colomn_Link('/products','enabled', 'Enabled','none')"/>
+                </th:block>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody class="entity-table-body">
+            <tr th:each="product: ${productList}">
+                <td style="text-align: center; vertical-align: middle;" class="hideable-column">
+                    <span th:text="${product.id}"></span>
+                    <span id="id" th:value="${product.id}"></span>
+                </td>
+
+                <td>
+                    <img th:if="${product.mainImage==null}" th:src="@{/icon/entity-default.png}">
+                    <img th:if="${product.mainImage!=null}" th:src="@{${product.mainImagePath}}" style="width: 120px"
+                         class="img-fluid">
+                </td>
+
+                <td style="text-align: center; vertical-align: middle;">
+                    <a class="link-detail" th:href="@{/products/detail/{id}(id=${product.id})}" th:title="${product.name}">
+                        <span th:text="${product.shortName}"></span>
+                    </a>
+                </td>
+
+                <td style="text-align: center; vertical-align: middle;"><span th:text="${product.brand.name}"></span>
+                </td>
+
+                <td style="text-align: center; vertical-align: middle;"><span th:text="${product.category.name}"></span>
+                </td>
+
+                <th:block sec:authorize="hasAnyAuthority('Admin', 'Editor')">
+                    <td style="text-align: center; vertical-align: middle;" class="entity-table-body cell">
+                        <span hidden th:value="${product.enabled}" th:text="${product.enabled}"></span>
+
+                        <a th:if="${product.enabled==true}" class="entity-table-body-enable"
+                           title="The product is currently enabled. Click to disable"
+                           th:href="@{'/products/' + ${product.id} + '/enabled/false?page='+${currentPage}+'&sortField='+${sortField}+'&sortDirection='+${sortDirection}+${keyword != null ? '&keyword=' + keyword : ''}+${categoryId != null ? '&categoryId=' + categoryId : ''}}">
+                            <img th:src="@{/icon/category-checked.png}" width="30px" height="30px">
+                        </a>
+
+                        <a th:if="${product.enabled==false}" class="entity-table-body-enable"
+                           title="The product is disable enabled. Click to enable"
+                           th:href="@{'/products/' + ${product.id} + '/enabled/true?page='+${currentPage}+'&sortField='+${sortField}+'&sortDirection='+${sortDirection}+${keyword != null ? '&keyword=' + keyword : ''}+${categoryId != null ? '&categoryId=' + categoryId : ''}}">
+                            <img th:src="@{/icon/category-denied.png}" width="30px" height="30px">
+                        </a>
+                    </td>
+                </th:block>
+
+                <td style="text-align: center; vertical-align: middle;" class="entity-table-body cell ">
+                    <div class="cell edit-delete edit-delete-products">
+                        <a th:href="@{/products/detail/{id}(id=${product.id})}" class="link-detail entity-table-body-edit"
+                           style="display: flex; flex-direction: column; align-items: center;margin-right: 0.5em;"><img th:src="@{/icon/details.png}" width="30px" height="30px">Details
+                        </a>
+
+                        <th:block sec:authorize="hasAnyAuthority('Admin', 'Editor', 'Salesperson')">
+                            <a th:href="@{'/products/edit/'+${product.id}+${currentPage != null ? '?page=' + currentPage : ''} +${sortField != null ? '&sortField=' + sortField : ''}+ ${sortDirection != null ? '&sortDirection=' + sortDirection : ''}+ ${keyword != null ? '&keyword=' + keyword : ''}+${categoryId != null ? '&categoryId=' + categoryId : ''}}" class="entity-table-body-edit"
+                               style="display: flex; flex-direction: column; align-items: center; margin-right: 0.5em;"><img th:src="@{/icon/icons8-edit-48.png}" width="30px" height="30px">Edit
+                            </a>
+                        </th:block>
+
+                        <th:block sec:authorize="hasAnyAuthority('Admin', 'Editor')">
+                            <a th:href="@{'/products/delete/'+${product.id}+${currentPage != null ? '?page=' + currentPage : ''} +${sortField != null ? '&sortField=' + sortField : ''}+ ${sortDirection != null ? '&sortDirection=' + sortDirection : ''}+ ${keyword != null ? '&keyword=' + keyword : ''}+${categoryId != null ? '&categoryId=' + categoryId : ''}}"
+                               class="entity-table-body-delete link-delete"
+                               style="display: flex; flex-direction: column; align-items: center;"><img
+                                    th:src="@{/icon/icons8-delete-48.png}" width="30px" height="30px">Delete</a>
+                        </th:block>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="less-details">
+        <div th:each="product: ${productList}" class="row m-1">
+            <div class="col-4 mb-2 less-details-photo-place">
+                <img th:if="${product.mainImage==null}" th:src="@{/icon/entity-default.png}">
+                <img th:if="${product.mainImage!=null}" th:src="@{${product.mainImagePath}}" style="width: 100px"
+                     class="img-fluid">
+            </div>
+            <div class="col-8 mb-3"
+                 style="display: flex; flex-direction: column; flex-wrap: wrap; justify-content: center;">
+                <div style="font-size: 18px; font-weight: bold"><span th:text="${product.name}"></span></td></div>
+                <div class="mt-2 entity-table-body cell" style="display: flex">
+                    <a th:href="@{/products/detail/{id}(id=${product.id})}"
+                       class="link-detail entity-table-body-edit"
+                       style="display: flex; flex-direction: column; align-items: center;margin-right: 0.5em;"><img
+                            th:src="@{/icon/details.png}" width="30px" height="30px">Details</a>
+
+                    <th:block sec:authorize="hasAnyAuthority('Admin', 'Editor', 'Salesperson')">
+                        <a th:href="@{'/products/edit/'+${product.id}+${currentPage != null ? '?page=' + currentPage : ''} +${sortField != null ? '&sortField=' + sortField : ''}+ ${sortDirection != null ? '&sortDirection=' + sortDirection : ''}+ ${keyword != null ? '&keyword=' + keyword : ''}+${categoryId != null ? '&categoryId=' + categoryId : ''}}"
+                           class="entity-table-body-edit"
+                           style="display: flex; flex-direction: column; align-items: center; margin-right: 0.5em;"><img
+                                th:src="@{/icon/icons8-edit-48.png}" width="30px" height="30px">Edit</a>
+                    </th:block>
+                    &nbsp;
+                    <th:block sec:authorize="hasAnyAuthority('Admin', 'Editor')">
+                        <a th:href="@{'/products/delete/'+${product.id}+${currentPage != null ? '?page=' + currentPage : ''} +${sortField != null ? '&sortField=' + sortField : ''}+ ${sortDirection != null ? '&sortDirection=' + sortDirection : ''}+ ${keyword != null ? '&keyword=' + keyword : ''}+${categoryId != null ? '&categoryId=' + categoryId : ''}}"
+                           class="entity-table-body-delete link-delete"
+                           style="display: flex; flex-direction: column; align-items: center;"><img
+                                th:src="@{/icon/icons8-delete-48.png}" width="30px" height="30px">Delete</a>
+                    </th:block>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="text-center m-1" th:if="${totalItems > 0}">
+        <span>Showing products # [[${startCount}]] to [[${endCount}]] of [[${totalItems}]]</span>
+    </div>
+    <div class="text-center m-1" th:unless="${totalItems > 0}">
+        <span>No products found</span>
+    </div>
+
+    <!--Pagination-->
+    <div th:if="${totalPages > 1}">
+        <nav>
+            <ul class="pagination justify-content-center flex-wrap">
+                <li th:class="${currentPage > 1 ? 'page-item' : 'page-item disabled'}">
+                    <a th:replace="fragments::products_pagination_page_link(1,'First')"/>
+                </li>
+
+                <li th:class="${currentPage > 1 ? 'page-item' : 'page-item disabled'}">
+                    <a th:replace="fragments::products_pagination_page_link(${currentPage - 1},'Previous')"/>
+                </li>
+
+                <th:block th:if="${totalPages <= 10}">
+                    <li th:each="i : ${#numbers.sequence(1, totalPages)}"
+                        th:class="${currentPage != i ? 'page-item': 'page-item active'}">
+                        <a th:replace="fragments::products_pagination_page_link(${i},${i})"/>
+                    </li>
+                </th:block>
+
+                <th:block th:if="${totalPages > 10}">
+                    <th:block th:if="${currentPage <= 5 || currentPage > totalPages - 4}">
+                        <li th:each="i : ${#numbers.sequence(1,5)}"
+                            th:class="${currentPage != i ? 'page-item': 'page-item active'}">
+                            <a th:replace="fragments::products_pagination_page_link(${i},${i})"/>
+                        </li>
+
+                        <a th:replace="fragments::products_pagination_page_link(6,'...')"/>
+
+                        <li th:each="i : ${#numbers.sequence(totalPages - 4,totalPages)}"
+                            th:class="${currentPage != i ? 'page-item': 'page-item active'}">
+                            <a th:replace="fragments::products_pagination_page_link(${i},${i})"/>
+                        </li>
+                    </th:block>
+
+                    <th:block th:if="${currentPage > 5 && currentPage <= totalPages - 4}">
+                        <a th:replace="fragments::products_pagination_page_link(${currentPage - 5},'...')"/>
+
+                        <li th:each="i : ${#numbers.sequence(currentPage - 4, currentPage + 4)}"
+                            th:class="${currentPage != i ? 'page-item': 'page-item active'}">
+                            <a th:replace="fragments::products_pagination_page_link(${i},${i})"/>
+                        </li>
+
+                        <a th:replace="fragments::products_pagination_page_link(${currentPage + 5},'...')"/>
+                    </th:block>
+                </th:block>
+
+                <li th:class="${currentPage < totalPages ? 'page-item' : 'page-item disabled'}">
+                    <a th:replace="fragments::products_pagination_page_link(${currentPage + 1},'Next')"/>
+                </li>
+
+                <li th:class="${currentPage < totalPages ? 'page-item' : 'page-item disabled'}">
+                    <a th:replace="fragments::products_pagination_page_link(${totalPages},'Last')"/>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <div th:replace="modal_fragments::modal_dialog_confirm_delete"></div>
+
+    <!--Modal window with details-->
+    <div class="modal fade" id="detailModal">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="fragments::footer"></div>
+
+</div>
+<script th:src="@{/js/forms.js}"></script>
+<script th:src="@{/js/common.js}"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".link-delete").on("click", function (e) {
+            e.preventDefault();
+            showDeleteConfirmModal($(this), "product");
+        });
+        /************************************/
+        $(".link-detail").on("click", function (e) {
+            e.preventDefault();
+            linkDetailURL = $(this).attr("href");
+            $("#detailModal").modal("show").find(".modal-content").load(linkDetailURL);
+        })
+
+        $("#dropdownProductCategory").on("change", function () {
+            $("#productSearchForm").submit();
+        })
+    });
+
+    function clearFilter() {
+        window.location = "[[@{/products}]]";
+    }
+</script>
+</body>
+</html>

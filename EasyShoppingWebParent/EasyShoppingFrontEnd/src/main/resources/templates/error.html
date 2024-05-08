@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head th:replace="fragments::page_head('Error - Easy Shopping','none')">
+</head>
+
+<body>
+<div class="container-fluid">
+    <div th:replace="navigation_menu_fragment::header_navigation_menu"></div>
+    <div class="m-3">
+        <h2>Sorry, an unexpected error has occurred</h2>
+    </div>
+</div>
+<div th:replace="fragments::footer"></div>
+</body>
+</html>
+
+<!--This error page will be displayed when the HTTP error codes other than 404, 403 and 500-->

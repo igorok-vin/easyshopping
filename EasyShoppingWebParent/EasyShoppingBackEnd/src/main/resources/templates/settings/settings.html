@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <head th:replace="fragments::page_head('Settings - Easy Shopping','tag')"></head>
+    <link rel="stylesheet" th:href="@{/richtexteditor/richtext.min.css}"/>
+    <script th:src="@{/richtexteditor/jquery.richtext.min.js}"></script>
+    <script th:src="@{/checkImageResolutionBeforeUploading/jquery.checkImageSize.js}"></script>
+</head>
+<body>
+<div class="container-fluid">
+    <div th:replace="navigation_menu_fragment::navigation_menu"></div>
+    <div>
+        <h2>Site Settings</h2>
+    </div>
+
+    <div th:if="${message != null}" class="alert alert-success text-center m-lg-1">
+        [[${message}]]
+    </div>
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" id="settingTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" data-toggle="tab" data-target="#general" type="button" role="tab">
+                General
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" data-toggle="tab" data-target="#countries" type="button" role="tab">
+                Countries
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" data-toggle="tab" data-target="#states" type="button" role="tab">States
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" data-toggle="tab" data-target="#mailServer" type="button" role="tab">Mail Server
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" data-toggle="tab" data-target="#mailTamplates" type="button" role="tab">Mail
+                Tamplates
+            </button>
+        </li>
+    </ul>
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+        <div class="tab-pane active p-3" id="general" role="tabpanel">
+            <div th:replace="settings/general::content" />
+        </div>
+        <div class="tab-pane" id="countries" role="tabpanel">
+            <h2>Countries</h2>
+        </div>
+        <div class="tab-pane" id="states" role="tabpanel">
+            <h2>States</h2>
+        </div>
+        <div class="tab-pane p-3" id="mailServer" role="tabpanel">
+            <h2>Mail Server</h2>
+        </div>
+        <div class="tab-pane p-3" id="mailTamplates" role="tabpanel">
+            <h2>Mail Tamplates</h2>
+        </div>
+    </div>
+
+    <div th:replace="fragments::footer"></div>
+
+</div>
+<script type="text/javascript">
+    IMAGE_HIGHT = 70;
+    IMAGE_WIDTH = 160;
+    MAX_FILE_SIZE = 100000; //100KB
+    defaultExtraImageThumbnailSrc = "[[@{/icon/entity-default.png}]]";
+</script>
+<script th:src="@{/js/forms.js}" type="text/javascript"></script>
+</body>
+</html>

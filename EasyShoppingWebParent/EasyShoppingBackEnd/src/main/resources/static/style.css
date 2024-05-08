@@ -1,0 +1,384 @@
+*.icon-white {
+    color: white
+}
+
+*.icon-silver {
+    color: silver
+}
+
+*.icon-green {
+    color: green
+}
+
+*.icon-dark {
+    color: gray
+}
+
+.entity-table {
+    text-align: center
+}
+
+.entity-table-body {
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.users-create-user {
+    display: inline-block;
+    position: relative;
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+.manage-entity-menu {
+    position: relative;
+}
+
+.create-new-entity:hover::after {
+    content: attr(data-title);
+    position: absolute;
+    left: 2%;
+    top: -70%;
+    z-index: 1;
+    background: rgba(230, 246, 255, 0.96);
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    padding: 5px 10px;
+    border: 1px solid #333;
+    opacity: 1;
+    transition: 1s;
+    font-weight: 600;
+}
+
+.create-new-entity.productCreation:hover::after{
+    right:-160%;
+}
+
+.export-csv:hover::after {
+    content: attr(data-title);
+    position: absolute;
+    left: 27%;
+    top: -70%;
+    right: -7%;
+    z-index: 1;
+    background: rgba(230, 246, 255, 0.96);
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    padding: 5px 10px;
+    border: 1px solid #333;
+    opacity: 1;
+    transition: 1s;
+    font-weight: 600;
+}
+
+.export-excel:hover::after {
+    content: attr(data-title);
+    position: absolute;
+    left: 54%;
+    top: -70%;
+    right: -37%;
+    z-index: 1;
+    background: rgba(230, 246, 255, 0.96);
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    padding: 5px 10px;
+    border: 1px solid #333;
+    opacity: 1;
+    transition: 1s;
+    font-weight: 600;
+}
+
+.export-pdf:hover::after {
+    content: attr(data-title);
+    position: absolute;
+    left: 80%;
+    top: -70%;
+    right: -60%;
+    z-index: 1;
+    background: rgba(230, 246, 255, 0.96);
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    padding: 5px 10px;
+    border: 1px solid #333;
+    opacity: 1;
+    transition: 1s;
+    font-weight: 600;
+}
+
+.entity-table-body .cell {
+    position: relative;
+}
+
+.filter-search:hover::after {
+    content: attr(data-title);
+    position: absolute;
+    left: 68%;
+    top: -21%;
+    right: 16%;
+    z-index: 1;
+    background: rgba(230, 246, 255, 0.96);
+    font-family: Arial, sans-serif;
+    font-size: 13px;
+    padding: 5px 10px;
+    border: 1px solid #333;
+    opacity: 1;
+    transition: 1s;
+    font-weight: 600;
+}
+
+.filter-clear-search:hover::after {
+    content: attr(data-title);
+    position: absolute;
+    left: 86%;
+    top: -21%;
+    right: -11%;
+    z-index: 1;
+    background: rgba(230, 246, 255, 0.96);
+    font-family: Arial, sans-serif;
+    font-size: 13px;
+    padding: 5px 10px;
+    border: 1px solid #333;
+    opacity: 1;
+    transition: 1s;
+    font-weight: 600;
+}
+.dropdown-item:hover {
+    background-color: #abb1b1;
+}
+.dropdown-menu {
+    left: -38%;
+}
+
+/*@MEDIA*/
+@media only screen and (max-width: 370px) {
+    /*small screen*/
+    .full-details {display: none}
+    .manage-entity-menu {
+        position: relative;
+    }
+    .create-new-entity:hover::after{
+        display: none;
+    }
+    .export-csv:hover::after{
+        display: none;
+    }
+    .export-excel:hover::after{
+        display: none;
+    }
+    .export-pdf:hover::after{
+        display: none;
+    }
+    .filter-clear-search:hover::after{
+        display: none;
+    }
+    .filter-search:hover::after{
+        display: none;
+    }
+    .entity-table-body-enable:hover::after{
+        pointer-events: none;
+        display: none;
+    }
+
+    .less-details-photo-place{
+        display: flex;
+        align-items: center;
+        justify-content: center
+    }
+    .entity-table-body-edit:hover::after{
+        display: none
+    }
+    .entity-table-body-delete:hover::after {
+        display: none
+    }
+    #product-entity-menu{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .product-filter-and-buttons-menu{
+        display: flex;
+        margin-top: 1rem;
+    }
+
+}
+@media only screen and (min-width: 371px) and (max-width: 424px) {
+    /*small screen*/
+    .full-details {display: none}
+    .manage-entity-menu {
+        position: relative;
+    }
+    .create-new-entity:hover::after{
+        display: none;
+    }
+    .export-csv:hover::after{
+        display: none;
+    }
+    .export-excel:hover::after{
+        display: none;
+    }
+    .export-pdf:hover::after{
+        display: none;
+    }
+    .filter-clear-search:hover::after{
+        display: none;
+    }
+    .filter-search:hover::after{
+        display: none;
+    }
+    .entity-table-body-enable{
+        pointer-events: none;
+        /*margin-right: 0.4rem;*/
+    }
+    #product-entity-menu{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    #productSearchForm{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .less-details-photo-place{
+        display: flex;
+        align-items: center;
+        justify-content: center
+    }
+}
+@media only screen and (min-width: 424px) and (max-width: 575px){
+    .full-details {display: none}
+    .manage-entity-menu {
+        position: relative;
+    }
+    .create-new-entity:hover::after{
+        display: none;
+    }
+    .export-csv:hover::after{
+        display: none;
+    }
+    .export-excel:hover::after{
+        display: none;
+    }
+    .export-pdf:hover::after{
+        display: none;
+    }
+    .filter-clear-search:hover::after{
+        display: none;
+    }
+    .filter-search:hover::after{
+        display: none;
+    }
+    .entity-table-body-enable{
+        pointer-events: none;
+    }
+    #product-entity-menu{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    #productSearchForm{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .less-details-photo-place{
+        display: flex;
+        align-items: center;
+        justify-content: center
+    }
+}
+@media only screen and (min-width: 575px) and (max-width: 769px) {
+    .full-details {display: none}
+    .hideable-column { display: none}
+    .create-new-entity:hover::after{
+        display: none;
+    }
+    .export-csv:hover::after{
+        display: none;
+    }
+    .export-excel:hover::after{
+        display: none;
+    }
+    .export-pdf:hover::after{
+        display: none;
+    }
+    .filter-clear-search:hover::after{
+        display: none;
+    }
+    .filter-search:hover::after{
+        display: none;
+    }
+    .entity-table-body-enable:hover::after{
+        display: none;
+    }
+    #product-entity-menu{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    #productSearchForm{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .product-filter-menu{
+        margin-top: 0.5rem;
+    }
+    .less-details-photo-place{
+        display: flex;
+        align-items: center;
+        justify-content: center
+    }
+    .entity-table-body-enable{
+        margin-right: 0.4rem;
+    }
+}
+
+@media screen and (min-width: 769px) and (max-width: 1023px) {
+    /*medium screen*/
+    .less-details {display: none}
+
+    .hideable-column { display: none}
+
+    .edit-delete {
+        display: flex ;
+        flex-wrap: nowrap ;
+    }
+    .edit-delete-products {
+        display: flex;
+        flex-wrap: nowrap;
+        flex-direction: column;
+    }
+    #product-entity-menu{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .product-filter-menu{
+        margin-left: 0.5rem;
+    }
+}
+@media screen and (min-width: 1023px) and (max-width: 1335px) {
+    /*large screen*/
+    div.less-details {display: none}
+
+    .edit-delete {
+        display: flex ;
+        flex-wrap: nowrap;
+    }
+}
+@media screen and (min-width: 1335px) {
+    div.less-details {
+        display: none
+    }
+
+    .navbar-expand-lg{
+      flex-flow: row nowrap;
+    }
+
+    .edit-delete {
+        display: flex ;
+        flex-wrap: nowrap;
+    }
+}
+

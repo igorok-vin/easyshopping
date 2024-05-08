@@ -1,0 +1,12 @@
+#bigImage {
+    float: bottom;
+    width:  400px;
+    height: 400px;
+    object-fit:scale-down;
+}
+.border {
+    border: 1.5px solid #818282d6 !important;
+}
+.categoryName {
+    text-align:center;
+}

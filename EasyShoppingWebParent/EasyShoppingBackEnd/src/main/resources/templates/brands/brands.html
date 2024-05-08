@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <head th:replace="fragments::page_head('Brands - Easy Shopping Admin','none')">
+    </head>
+<body>
+<div class="container-fluid">
+    <div th:replace="navigation_menu_fragment::navigation_menu"></div>
+    <div>
+        <div>
+            <h2>Manage Brands</h2>
+            <div th:if="${message != null}" class="alert alert-success text-center m-lg-1">
+                [[${message}]]
+            </div>
+        </div>
+
+        <div style="display: flex; align-items: center;">
+            <div class="manage-entity-menu">
+                <a th:href="@{/brands/new}" class="create-new-entity mr-2" data-title="Add new Brand"><img th:src="@{/icon/category.png}" width="40px" height="40px">
+                </a>
+
+                <a th:href="@{/brands/export/csv}" class="export-csv mr-2" data-title="Export brands to CSV"><img th:src="@{/icon/icons8-export-csv-80.png}" width="40px" height="40px">
+                </a>
+
+                <a th:href="@{/brands/export/excel}" class="export-excel mr-2" data-title="Export brands to Excel"><img th:src="@{/icon/icons8-export-excel-96.png}" width="40px" height="40px">
+                </a>
+
+                <a th:href="@{/brands/export/pdf}" target=”_blank” class="export-pdf mr-2" data-title="Export brands to PDF"><img th:src="@{/icon/icons8-export-pdf-60.png}" width="43px" height="43px">
+                </a>
+            </div>
+
+            <div th:replace="fragments::search_form('/brands/page/1')"></div>
+
+        </div>
+    </div>
+
+    <div class="table-responsive full-details">
+        <table class="table table-bordered table-striped table-hover table-responsive{-sm|-md|-lg|-xl} entity-table">
+            <thead class="table-dark">
+
+            <tr>
+                <th class="hideable-column">Brand ID</th>
+                <th>Brand Logo</th>
+                <th>
+                    <a class="text-white" th:href="@{'/brands/page/'+${currentPage}+'?sortDirection='+${reverseDirection}+${keyword != null ? '&keyword=' + keyword : ''}}">Brand Name</a>
+                    <span th:class="${reverseDirection == 'desc' ? 'fas fa-sort-up': 'fas fa-sort-down'}"></span>
+                </th>
+                <th>Categories</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody class="entity-table-body">
+            <tr th:each="brand: ${listBrands}">
+                <td style="text-align: center; vertical-align: middle;" class="hideable-column">
+                    <span th:text="${brand.id}"></span>
+                    <span id="id" th:value="${brand.id}"></span>
+                </td>
+
+                <td>
+                    <img th:if="${brand.logo==null}" th:src="@{/icon/entity-default.png}">
+                    <img th:if="${brand.logo!=null}" th:src="@{${brand.logoPath}}" style="width: 100px" class="img-fluid">
+                </td>
+
+                <td style="text-align: center; vertical-align: middle;"><span th:text="${brand.name}"></span></td>
+
+                <td style="text-align: center; vertical-align: middle;">
+                    <th:block th:each="category: ${brand.categories}">
+                        <span class="badge badge-secondary" th:text="${category}"></span>
+                    </th:block>
+                </td>
+
+                <td style="text-align: center; vertical-align: middle;" class="entity-table-body cell">
+                    <div class="cell edit-delete">
+
+                        <a th:href="@{'/brand/edit/'+${brand.id}+${currentPage != null ? '?page=' + currentPage : ''} +${sortField != null ? '&sortField=' + sortField : ''}+ ${sortDirection != null ? '&sortDirection=' + sortDirection : ''}+ ${keyword != null ? '&keyword=' + keyword : ''}}"class="entity-table-body-edit" style="display: flex; flex-direction: column; align-items: center; margin-right: 0.5em;"> <img th:src="@{/icon/icons8-edit-48.png}" width="30px" height="30px">Edit</a>
+
+                        <a th:href="@{'/brand/delete/'+${brand.id}+${currentPage != null ? '?page=' + currentPage : ''} +${sortField != null ? '&sortField=' + sortField : ''}+ ${sortDirection != null ? '&sortDirection=' + sortDirection : ''}+ ${keyword != null ? '&keyword=' + keyword : ''}}" th:entityDeleteId="${brand.id}" class="entity-table-body-delete link-delete" style="display: flex; flex-direction: column; align-items: center;"><img th:src="@{/icon/icons8-delete-48.png}" width="30px" height="30px">Delete</a>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="less-details">
+        <div th:each="brand: ${listBrands}" class="row m-1">
+            <div class="col-4 mb-2 less-details-photo-place">
+                <img th:if="${brand.logo==null}" th:src="@{/icon/entity-default.png}">
+                <img th:if="${brand.logo!=null}" th:src="@{${brand.logoPath}}" style="width: 100px"
+                     class="img-fluid">
+            </div>
+            <div class="col-8 mb-3"
+                 style="display: flex; flex-direction: column; flex-wrap: wrap; justify-content: center;">
+                <div class="h5 font-weight-bold"><span th:text="${brand.name}"></span></td></div>
+                <div class="mt-2 entity-table-body cell" style="display: flex">
+
+                    <a th:href="@{'/brand/edit/'+${brand.id}+${currentPage != null ? '?page=' + currentPage : ''} +${sortField != null ? '&sortField=' + sortField : ''}+ ${sortDirection != null ? '&sortDirection=' + sortDirection : ''}+ ${keyword != null ? '&keyword=' + keyword : ''}}"class="entity-table-body-edit" style="display: flex; flex-direction: column; align-items: center; margin-right: 0.5em;"> <img th:src="@{/icon/icons8-edit-48.png}" width="30px" height="30px">Edit</a>
+
+                    <a th:href="@{'/brand/delete/'+${brand.id}+${currentPage != null ? '?page=' + currentPage : ''} +${sortField != null ? '&sortField=' + sortField : ''}+ ${sortDirection != null ? '&sortDirection=' + sortDirection : ''}+ ${keyword != null ? '&keyword=' + keyword : ''}}" th:entityDeleteId="${brand.id}" class="entity-table-body-delete link-delete" style="display: flex; flex-direction: column; align-items: center;"><img th:src="@{/icon/icons8-delete-48.png}" width="30px" height="30px">Delete</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="text-center m-1" th:if="${totalItems > 0}">
+        <span>Showing brands # [[${startCount}]] to [[${endCount}]] of [[${totalItems}]]</span>
+    </div>
+    <div class="text-center m-1" th:unless="${totalItems > 0}">
+        <span>No brands found</span>
+    </div>
+
+    <!--Pagination-->
+    <div th:if="${totalPages > 1}">
+        <nav>
+            <ul class="pagination justify-content-center flex-wrap">
+                <li th:class="${currentPage > 1 ? 'page-item' : 'page-item disabled'}">
+                    <a th:replace="fragments::brands_pagination_page_link(1,'First')"/>
+                </li>
+
+                <li th:class="${currentPage > 1 ? 'page-item' : 'page-item disabled'}">
+                    <a th:replace="fragments::brands_pagination_page_link(${currentPage - 1},'Previous')"/>
+                </li>
+
+                <th:block th:if="${totalPages <= 10}">
+                    <li th:each="i : ${#numbers.sequence(1, totalPages)}"
+                        th:class="${currentPage != i ? 'page-item': 'page-item active'}">
+                        <a th:replace="fragments::brands_pagination_page_link(${i},${i})"/>
+                    </li>
+                </th:block>
+
+                <th:block th:if="${totalPages > 10}">
+                    <th:block th:if="${currentPage <= 5 || currentPage > totalPages - 4}">
+                        <li th:each="i : ${#numbers.sequence(1,5)}"
+                            th:class="${currentPage != i ? 'page-item': 'page-item active'}">
+                            <a th:replace="fragments::brands_pagination_page_link(${i},${i})"/>
+                        </li>
+
+                        <a th:replace="fragments::brands_pagination_page_link(6,'...')"/>
+
+                        <li th:each="i : ${#numbers.sequence(totalPages - 4,totalPages)}"
+                            th:class="${currentPage != i ? 'page-item': 'page-item active'}">
+                            <a th:replace="fragments::brands_pagination_page_link(${i},${i})"/>
+                        </li>
+                    </th:block>
+
+                    <th:block th:if="${currentPage > 5 && currentPage <= totalPages - 4}">
+                        <a th:replace="fragments::brands_pagination_page_link(${currentPage - 5},'...')"/>
+
+                        <li th:each="i : ${#numbers.sequence(currentPage - 4,currentPage + 4)}" th:class="${currentPage != i ? 'page-item': 'page-item active'}">
+                            <a th:replace="fragments::brands_pagination_page_link(${i},${i})"/>
+                        </li>
+
+                        <a th:replace="fragments::brands_pagination_page_link(${currentPage + 5},'...')"/>
+                    </th:block>
+                </th:block>
+
+                <li th:class="${currentPage < totalPages ? 'page-item' : 'page-item disabled'}">
+                    <a th:replace="fragments::brands_pagination_page_link(${currentPage + 1},'Next')"/>
+                </li>
+
+                <li th:class="${currentPage < totalPages ? 'page-item' : 'page-item disabled'}">
+                    <a th:replace="fragments::brands_pagination_page_link(${totalPages},'Last')"/>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <div th:replace="modal_fragments::modal_dialog_confirm_delete"></div>
+
+    <div th:replace="fragments::footer"></div>
+
+</div>
+<script th:src="@{/js/forms.js}"></script>
+<script th:src="@{/js/common.js}"></script>
+<script type="text/javascript">
+    moduleURL = "[[@{/brands}]]";
+
+    $(document).ready(function() {
+        $(".link-delete").on("click", function(e) {
+            e.preventDefault();
+            showDeleteConfirmModal($(this), "brand");
+        });
+    });
+
+    function clearFilter() {
+        window.location = "[[@{/brands}]]";
+    }
+</script>
+</body>
+</html>

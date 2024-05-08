@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head th:fragment="page_head(title, remove)" th:remove="${remove}">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0">
+
+    <title>[[${title}]]</title>
+
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/fontawesome/all.css}"/>
+    <link rel="stylesheet" th:href="@{/style.css}">
+    <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/forms.js}"></script>
+    <script type="text/javascript" th:src="@{/js/common.js}"></script>
+    <script type="text/javascript" th:src="@{/js/main.js}"></script>
+</head>
+<body>
+<div th:fragment="search_form(modulURL)" class="manage-entity-menu">
+    <form th:action="@{${modulURL}}" class="form-inline m-3">
+        <input type="hidden" name="sortField" th:value="${sortField}"/>
+        <input type="hidden" name="sortDirection" th:value="${sortDirection}"/>
+
+        Filter:&nbsp;
+        <input type="search" name="keyword" th:value="${keyword}" class="form-control" required/>
+        &nbsp;&nbsp;
+        <button style="border: 0; background: none;" type="submit" value="Search" class="filter-search"
+                data-title="Search"><img th:src="@{/icon/icons8-search.gif}" width="43px" height="43px">
+        </button>
+        &nbsp;&nbsp;
+        <button style="border: 0; background: none;" type="button" value="Clear" class="filter-clear-search"
+                data-title="Clear search" onclick="clearFilter()"><img
+                th:src="@{/icon/icons8-clear-button-96.png}" width="43px" height="43px"></button>
+    </form>
+</div>
+<!--*****************************************************-->
+<th th:fragment="colomn_Link (moduleURL, fieldName, columnLabel,removeTag)" th:remove="${removeTag}">
+    <a class="text-white"
+       th:href="@{${moduleURL}+'/page/' + ${currentPage} + '?sortField='+${fieldName}+'&sortDirection='+${sortField != fieldName ? sortDirection: reverseDirection} +${keyword != null ? '&keyword=' + keyword : ''}+${categoryId != null ? '&categoryId=' + categoryId : ''}}">
+        [[${columnLabel}]]
+    </a>
+    <span th:if="${sortField == fieldName}"
+          th:class="${sortDirection == 'asc' ? 'fas fa-sort-up': 'fas fa-sort-down'}"></span>
+</th>
+<!--******************************************************-->
+<a th:fragment="users_pagination_page_link(pageNumber, label)" class="page-link"
+   th:href="@{'/users/page/'+${pageNumber}+'?sortField=' + ${sortField} + '&sortDirection=' + ${sortDirection} + ${keyword != null ? '&keyword=' + keyword : ''}}">[[${label}]]</a>
+<!--***********************************************************-->
+<a th:fragment="categories_pagination_page_link(pageNumber, label)" class="page-link"
+   th:href="@{'/categories/page/'+${pageNumber}+'?sortField=' + ${sortField}+ '&sortDirection=' + ${sortDirection}+${keyword != null ? '&keyword=' + keyword : ''}}">[[${label}]]</a>
+<!--***********************************************************-->
+<a th:fragment="brands_pagination_page_link(pageNumber, label)" class="page-link" th:href="@{'/brands/page/'+${pageNumber}+'?sortField=' + ${sortField}+ '&sortDirection=' + ${sortDirection}+${keyword != null ? '&keyword=' + keyword : ''}}">[[${label}]]</a>
+<!--***********************************************************-->
+<a th:fragment="products_pagination_page_link(pageNumber, label)" class="page-link" th:href="@{'/products/page/'+${pageNumber}+'?sortField=' + ${sortField}+ '&sortDirection=' + ${sortDirection}+${keyword != null ? '&keyword=' + keyword : ''}+${categoryId != null ? '&categoryId=' + categoryId : ''}}">[[${label}]]</a>
+<!--***********************************************************-->
+<div th:fragment="footer" class="text-center">
+    <p>Easy Shopping Control Panel - Copyright &copy; Easy Shopping</p>
+</div>
+</body>
+</html>

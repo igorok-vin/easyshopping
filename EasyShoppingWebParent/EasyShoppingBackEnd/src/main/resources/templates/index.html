@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurtiy5">
+<head th:replace="fragments::page_head('Home - Easy Shopping Admin','none')">
+</head>
+<body>
+<div class="container-fluid">
+    <div th:replace="navigation_menu_fragment::navigation_menu"></div>
+
+    <div>
+        <h2>Easy Shopping Control Panel</h2>
+        Welcome
+        <a th:href="@{/account}" sec:authentication="principal.fullname"></a>
+        &nbsp;
+        <span sec:authentication="principal.authorities"></span>
+    </div>
+
+    <div th:replace="fragments::footer"></div>
+
+</div>
+</body>
+</html>
